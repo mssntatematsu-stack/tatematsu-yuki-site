@@ -1,0 +1,365 @@
+# Pages CMS: https://pagescms.org/
+media:
+- name: images
+  label: 写真
+  input: assets
+  output: assets
+  rename: safe
+  extensions:
+  - png
+  - jpg
+  - jpeg
+  - webp
+- name: documents
+  label: 資料・PDF
+  input: docs
+  output: docs
+  rename: safe
+  extensions:
+  - pdf
+settings:
+  content:
+    merge: true
+content:
+- name: home
+  label: ① トップ・ごあいさつ
+  type: file
+  path: data/01-home.json
+  format: json
+  fields:
+  - name: siteName
+    label: サイト名
+    type: string
+  - name: updated
+    label: 掲載情報の更新時期
+    type: string
+  - name: affiliation
+    label: 所属・役職
+    type: string
+  - name: tagline
+    label: 活動スローガン
+    type: string
+  - name: hero
+    label: トップの文章
+    type: object
+    fields:
+    - name: eyebrow
+      label: 小さな見出し
+      type: string
+    - name: line1
+      label: メイン見出し・1行目
+      type: string
+    - name: line2
+      label: メイン見出し・2行目
+      type: string
+    - name: highlight
+      label: 強調メッセージ
+      type: string
+    - name: description
+      label: 紹介文
+      type: text
+  - name: intro
+    label: 私の想い
+    type: object
+    fields:
+    - name: eyebrow
+      label: 見出しラベル
+      type: string
+    - name: heading
+      label: 見出し
+      type: text
+    - name: paragraphs
+      label: 文章（段落ごとに追加できます）
+      type: text
+      list: true
+    - name: quote
+      label: 締めのメッセージ
+      type: string
+  - name: vision
+    label: 目指す武蔵野
+    type: object
+    fields:
+    - name: label
+      label: ラベル
+      type: string
+    - name: heading
+      label: 見出し
+      type: text
+    - name: description
+      label: 説明文
+      type: text
+    - name: keywords
+      label: キーワード
+      type: string
+      list: true
+  - name: images
+    label: トップ・プロフィール写真
+    type: object
+    fields:
+    - name: hero
+      label: メイン写真
+      type: image
+      required: false
+      options:
+        media: images
+    - name: portrait
+      label: プロフィール写真
+      type: image
+      required: false
+      options:
+        media: images
+    - name: message
+      label: 親子・地域活動写真
+      type: image
+      required: false
+      options:
+        media: images
+    - name: city1
+      label: 桜・街並みの写真
+      type: image
+      required: false
+      options:
+        media: images
+    - name: city2
+      label: 緑地・自然の写真
+      type: image
+      required: false
+      options:
+        media: images
+- name: policies
+  label: ② 4つの政策
+  type: file
+  path: data/02-policies.json
+  format: json
+  fields:
+  - name: policies
+    label: 政策カード（並べ替え可能）
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{number} {title}'
+    fields:
+    - name: number
+      label: '番号（例: 01）'
+      type: string
+    - name: tag
+      label: 分野名
+      type: string
+    - name: title
+      label: タイトル
+      type: string
+    - name: short
+      label: 一覧の短い説明
+      type: text
+    - name: details
+      label: 詳しい説明（段落ごと）
+      type: text
+      list: true
+    - name: actions
+      label: 取り組み項目
+      type: string
+      list: true
+- name: activities
+  label: ③ 活動紹介・写真
+  type: file
+  path: data/03-activities.json
+  format: json
+  fields:
+  - name: activities
+    label: 活動カード
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{title}'
+    fields:
+    - name: tag
+      label: 分類
+      type: string
+    - name: title
+      label: 活動タイトル
+      type: string
+    - name: description
+      label: 紹介文
+      type: text
+    - name: image
+      label: 写真を選択・アップロード
+      type: image
+      required: false
+      options:
+        media: images
+    - name: alt
+      label: 写真の説明（アクセシビリティ用）
+      type: string
+- name: profile
+  label: ④ プロフィール
+  type: file
+  path: data/04-profile.json
+  format: json
+  fields:
+  - name: profile
+    label: プロフィール本文
+    type: object
+    fields:
+    - name: heading
+      label: 見出し
+      type: string
+    - name: catchphrase
+      label: 短いメッセージ
+      type: string
+    - name: lead
+      label: 自己紹介
+      type: text
+    - name: items
+      label: 経歴・学歴（自由に追加可能）
+      type: object
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{label}'
+      fields:
+      - name: label
+        label: 項目名
+        type: string
+      - name: value
+        label: 内容
+        type: text
+- name: news
+  label: ⑤ 活動報告・お知らせ
+  type: file
+  path: data/05-news.json
+  format: json
+  fields:
+  - name: news
+    label: 記事（+ ボタンで追加できます）
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{date} {title}'
+    fields:
+    - name: published
+      label: 公開する（OFFは下書き）
+      type: boolean
+      default: true
+    - name: date
+      label: 日付（YYYY-MM-DD）
+      type: date
+      options:
+        format: yyyy-MM-dd
+    - name: category
+      label: カテゴリー
+      type: select
+      options:
+        values:
+        - 活動報告
+        - 政策・考え
+        - お知らせ
+    - name: title
+      label: 記事のタイトル
+      type: string
+    - name: summary
+      label: 一覧に出る短い紹介
+      type: text
+    - name: body
+      label: 本文（改行が反映されます）
+      type: text
+    - name: url
+      label: 関連URLまたはPDFのURL
+      type: string
+      required: false
+    - name: linkLabel
+      label: リンクボタンの文言
+      type: string
+      required: false
+- name: contact
+  label: ⑥ 連絡先・SNS
+  type: file
+  path: data/06-contact.json
+  format: json
+  fields:
+  - name: contact
+    label: 事務所・SNS
+    type: object
+    fields:
+    - name: address
+      label: 事務所の住所
+      type: string
+    - name: phone
+      label: 電話番号
+      type: string
+    - name: email
+      label: メールアドレス
+      type: string
+    - name: instagram
+      label: InstagramのURL
+      type: string
+    - name: instagramLabel
+      label: Instagramアカウント名
+      type: string
+    - name: x
+      label: XのURL
+      type: string
+    - name: xLabel
+      label: Xアカウント名
+      type: string
+- name: message
+  label: ⑦ 私の想い・全文
+  type: file
+  path: data/07-message.json
+  format: json
+  fields:
+  - name: message
+    label: 私の想い
+    type: object
+    fields:
+    - name: title
+      label: ページタイトル
+      type: string
+    - name: sections
+      label: 文章の見出しと段落
+      type: object
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{heading}'
+      fields:
+      - name: heading
+        label: 見出し
+        type: string
+      - name: paragraphs
+        label: 段落
+        type: text
+        list: true
+- name: profileDetail
+  label: ⑧ プロフィール・全文
+  type: file
+  path: data/08-profile-detail.json
+  format: json
+  fields:
+  - name: profileDetail
+    label: プロフィール全文
+    type: object
+    fields:
+    - name: title
+      label: ページタイトル
+      type: string
+    - name: subtitle
+      label: サブタイトル
+      type: text
+    - name: sections
+      label: 経歴・資格の項目
+      type: object
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{heading}'
+      fields:
+      - name: heading
+        label: 見出し
+        type: string
+      - name: lines
+        label: 本文（行単位）
+        type: text
+        list: true
